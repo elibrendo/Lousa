@@ -33,7 +33,7 @@ main{flex:1;min-width:0;min-height:0;padding:0;display:flex;background:white}.ca
 .canvas-wrap{position:relative}
 .game-topbar{position:absolute;z-index:4;top:0;left:calc((100% - var(--guess-panel-width))/2);transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:0;max-width:calc(100% - var(--guess-panel-width) - 16px);padding:7px 10px;background:#252525;color:#fff;border-radius:0 0 9px 9px;box-shadow:0 3px 12px #0002}.game-topbar>*{padding:2px 12px}.game-topbar>*+*{border-left:1px solid #505050}.timer-block{padding-left:8px;padding-right:12px}.score-block{padding-left:12px;padding-right:8px}
 .timer-block{min-width:88px;text-align:center;position:relative}.timer-row{display:flex;align-items:center;justify-content:center;gap:7px}.timer-row .timer-value{min-width:52px}.pause-timer{min-width:30px;width:30px;height:30px;padding:0;font-size:15px;line-height:1}.timer-label{font-size:12px;color:#ccc}.timer-value{font-size:24px;font-weight:bold;color:#ff4242;font-variant-numeric:tabular-nums}.timer-controls button{min-width:74px}.word-masks{display:flex;gap:14px;align-items:center}.masked-word{min-width:80px;text-align:center;font-size:16px;font-weight:bold;letter-spacing:2px;white-space:nowrap}.masked-word.solved{color:#39d979;letter-spacing:0}.masked-word.revealed{color:#ffdc6b}
-.guess-panel{position:absolute;right:0;top:0;bottom:0;width:var(--guess-panel-width);background:#252525;color:white;z-index:3;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;padding:14px 10px;overflow-y:auto}.guess-item{text-align:left;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:7px}.guess-label{font-size:13px;max-width:100%;overflow-wrap:anywhere}.guess-panel .section-title{font-size:13px}.round-words-heading{display:flex;align-items:center;justify-content:space-between;gap:6px}.privacy-toggle{font-size:10px;min-height:28px;padding:5px 6px;flex:0 0 auto}.private-round-section{transition:filter .15s ease}.private-round-section.blurred{filter:none;user-select:none}.private-round-section.blurred .word-row{position:relative}.private-round-section.blurred .word-row input{color:transparent!important;text-shadow:none!important;caret-color:transparent}.private-round-section.blurred .word-row::after{content:"*****";position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#fff;font-size:12px;letter-spacing:2px;pointer-events:none}.private-round-section.blurred .word-row input::placeholder{color:transparent}.points-settings{display:flex;flex-direction:column;gap:5px}.duration-setting{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:#ddd}.duration-setting input{width:72px;background:#191919;color:#fff;border:1px solid #555;border-radius:4px;padding:5px;text-align:center;font-size:12px}.points-settings label{display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:11px;color:#ddd}.points-settings input{width:48px;background:#191919;color:#fff;border:1px solid #555;border-radius:4px;padding:4px;text-align:center;font-size:12px}.guess-panel .word-entry{flex-shrink:0}.guess-panel #setWords{margin-top:8px;flex-shrink:0}.guess-panel .round-words-heading{padding-bottom:8px;border-bottom:1px solid #505050}.guess-panel #roundWordsPrivacy{padding-bottom:8px}.guess-panel .points-settings{padding-top:7px;border-top:1px solid #505050}.guess-panel .guess-item{gap:7px;background:#303030;border:1px solid #414141;border-radius:6px;padding:7px}.guess-panel hr{margin:3px 0}.guess-button{flex:0 0 38px;width:38px;height:34px;font-size:18px;font-weight:bold;border:2px solid #eee;background:#171717;padding:0}.guess-button.solved{color:#35df77;border-color:#35df77}.guess-button:disabled{opacity:1;cursor:default}
+.guess-panel{position:absolute;right:0;top:0;bottom:0;width:var(--guess-panel-width);background:#252525;color:white;z-index:3;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;padding:14px 10px;overflow-y:auto}.guess-item{text-align:left;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:7px}.guess-label{font-size:13px;max-width:100%;overflow-wrap:anywhere}.guess-panel .section-title{font-size:13px}.round-words-heading{display:flex;align-items:center;justify-content:space-between;gap:6px}.privacy-toggle{font-size:10px;min-height:28px;padding:5px 6px;flex:0 0 auto}.private-round-section{transition:filter .15s ease}.private-round-section.blurred{filter:none;user-select:none}.private-round-section.blurred .word-row{position:relative}.private-round-section.blurred .word-row input{color:transparent!important;text-shadow:none!important;caret-color:transparent}.private-round-section.blurred .word-row::after{content:attr(data-mask);position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#fff;font-size:12px;letter-spacing:2px;pointer-events:none}.private-round-section.blurred .word-row input::placeholder{color:transparent}.points-settings{display:flex;flex-direction:column;gap:5px}.duration-setting{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:#ddd}.duration-setting input{width:72px;background:#191919;color:#fff;border:1px solid #555;border-radius:4px;padding:5px;text-align:center;font-size:12px}.points-settings label{display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:11px;color:#ddd}.points-settings input{width:48px;background:#191919;color:#fff;border:1px solid #555;border-radius:4px;padding:4px;text-align:center;font-size:12px}.guess-panel .word-entry{flex-shrink:0}.guess-panel #setWords{margin-top:8px;flex-shrink:0}.guess-panel .round-words-heading{padding-bottom:8px;border-bottom:1px solid #505050}.guess-panel #roundWordsPrivacy{padding-bottom:8px}.guess-panel .points-settings{padding-top:7px;border-top:1px solid #505050}.guess-panel .guess-item{gap:7px;background:#303030;border:1px solid #414141;border-radius:6px;padding:7px}.guess-panel hr{margin:3px 0}.guess-button{flex:0 0 38px;width:38px;height:34px;font-size:18px;font-weight:bold;border:2px solid #eee;background:#171717;padding:0}.guess-button.solved{color:#35df77;border-color:#35df77}.guess-button:disabled{opacity:1;cursor:default}
 .canvas{background:white}.results-overlay{position:absolute;z-index:10;inset:0;background:#0009;display:flex;align-items:center;justify-content:center;padding:20px}.results-card{width:min(460px,90%);background:#252525;color:#fff;border:1px solid #555;border-radius:12px;padding:22px;box-shadow:0 12px 40px #0005}.results-card h2{margin:0 0 12px;text-align:center}.results-score{text-align:center;font-size:28px;font-weight:bold;color:#ffd34d;margin:8px 0 16px}.results-list{display:flex;flex-direction:column;gap:9px;font-size:14px}.results-card button{display:block;margin:18px auto 0;min-width:120px}.results-overlay[hidden]{display:none}
 @media(max-width:850px){:root{--sidebar-width:130px;--guess-panel-width:190px}.sidebar{padding:8px 5px}.game-topbar{gap:7px;padding:7px 9px}.masked-word{min-width:42px;font-size:12px;letter-spacing:1px}.word-masks{gap:5px}.timer-value{font-size:18px}.guess-panel{padding:10px 8px}.guess-label{font-size:11px}.guess-button{flex-basis:32px;width:32px;height:30px}.score-value{font-size:18px}}
 @media(max-height:650px){.sidebar{gap:5px;padding:6px}.brand{display:none}.section-title{margin-top:0}.tool-grid button{min-height:30px}.swatch{width:20px!important;height:20px!important;min-height:20px!important}.size-box{min-height:110px}.game-topbar{padding:5px 10px}.timer-value{font-size:18px}}
@@ -322,6 +322,8 @@ canvas{grid-area:board;min-width:0;min-height:0}
 .final-card h2{grid-area:h}.final-card #podium{grid-area:pod}.final-card #podiumRest{grid-area:rest}.final-card #awards{grid-area:aw;grid-template-columns:1fr!important;align-self:start}.final-card #tiebreak{grid-area:tb;margin:0 0 8px}.final-card .final-actions{grid-area:act}
 .final-card .podium{margin:8px 0 10px}
 @media(max-width:700px){.final-card{display:block!important}}
+.masked-word.xlong{font-size:12px!important;letter-spacing:1px!important;min-width:0}
+.private-round-section.blurred .word-row:not([data-mask])::after{content:"*****"}
 </style>
 </head>
 
@@ -396,7 +398,7 @@ canvas{grid-area:board;min-width:0;min-height:0}
     <div class="bottom-actions"><button id="showFinal" type="button" title="Ver classificação"><svg class="ic" aria-hidden="true"><use href="#i-trophy"/></svg> Classificação</button></div>
   </section>
   <div class="results-overlay" id="resultsOverlay" hidden><div class="results-card" role="dialog" aria-modal="true" aria-labelledby="resultsTitle"><h2 id="resultsTitle">Rodada encerrada</h2><div class="results-score" id="resultsScore">Pontuação final: 0 pontos</div><div class="results-list" id="resultsList"></div><button id="closeResults">Fechar</button></div></div>
-  <div class="results-overlay" id="finalOverlay" hidden><div class="results-card final-card" role="dialog" aria-modal="true" aria-labelledby="finalTitle"><h2 id="finalTitle"><svg class="ic" aria-hidden="true"><use href="#i-trophy"/></svg> Classificação final</h2><div class="podium" id="podium"></div><div class="podium-rest" id="podiumRest" hidden></div><div class="tiebreak" id="tiebreak" hidden></div><div class="awards" id="awards"></div><div class="final-actions"><button id="finalNew" type="button">Nova sessão</button><button id="finalClose" type="button">Fechar</button></div></div></div>
+  <div class="results-overlay" id="finalOverlay" hidden><div class="results-card final-card" role="dialog" aria-modal="true" aria-labelledby="finalTitle"><h2 id="finalTitle"><svg class="ic" aria-hidden="true"><use href="#i-trophy"/></svg> Classificação final</h2><div class="podium" id="podium"></div><div class="podium-rest" id="podiumRest" hidden></div><div class="tiebreak" id="tiebreak" hidden></div><div class="awards" id="awards"></div><div class="final-actions"><button id="finalPng" type="button">Exportar placar (.png)</button><button id="finalNew" type="button">Nova sessão</button><button id="finalClose" type="button">Fechar</button></div></div></div>
   <aside class="guess-panel" aria-label="Rodada, palavras e início do jogo">
     <div class="round-words-heading"><div class="section-title">Palavras da rodada</div><button id="privacyToggle" class="privacy-toggle" type="button" aria-pressed="false" title="Ocultar as palavras com asteriscos">Ocultar</button></div>
     <div id="roundWordsPrivacy" class="private-round-section">
@@ -446,11 +448,11 @@ canvas{grid-area:board;min-width:0;min-height:0}
         <label class="duration-setting" for="durationSeconds">Duração (segundos)<input id="durationSeconds" type="number" min="1" max="3600" value="120"></label>
     <div class="section-title">Pontuação por tempo restante</div>
     <div class="points-settings">
-      <label>2:00–1:50 <input id="points5" type="number" min="0" max="999" value="5" aria-label="Pontos de 2 minutos a 1 minuto e 50 segundos"></label>
-      <label>1:49–1:00 <input id="points4" type="number" min="0" max="999" value="4" aria-label="Pontos de 1 minuto e 49 a 1 minuto"></label>
-      <label>0:59–0:45 <input id="points3" type="number" min="0" max="999" value="3" aria-label="Pontos de 59 a 45 segundos"></label>
-      <label>0:44–0:11 <input id="points2" type="number" min="0" max="999" value="2" aria-label="Pontos de 44 a 11 segundos"></label>
-      <label>0:10–0:00 <input id="points1" type="number" min="0" max="999" value="1" aria-label="Pontos dos últimos 10 segundos"></label>
+      <label>2:00–1:50 <input id="points5" type="number" min="0" max="999" value="10" aria-label="Pontos de 2 minutos a 1 minuto e 50 segundos"></label>
+      <label>1:49–1:00 <input id="points4" type="number" min="0" max="999" value="8" aria-label="Pontos de 1 minuto e 49 a 1 minuto"></label>
+      <label>0:59–0:45 <input id="points3" type="number" min="0" max="999" value="6" aria-label="Pontos de 59 a 45 segundos"></label>
+      <label>0:44–0:11 <input id="points2" type="number" min="0" max="999" value="4" aria-label="Pontos de 44 a 11 segundos"></label>
+      <label>0:10–0:00 <input id="points1" type="number" min="0" max="999" value="2" aria-label="Pontos dos últimos 10 segundos"></label>
     </div>
       </section>
 </div>
@@ -476,7 +478,10 @@ canvas{grid-area:board;min-width:0;min-height:0}
         <label><input type="checkbox" value="animais" checked> Animais</label>
         <label><input type="checkbox" value="comidas" checked> Comidas</label>
         <label><input type="checkbox" value="filmes" checked> Filmes</label>
+        <label><input type="checkbox" value="frases"> 🤪 Frases aleatórias (engraçadas)</label>
       </div>
+      <label class="duration-setting" for="phraseHint">Frases: mostrar a 1ª letra de cada palavra<input id="phraseHint" type="checkbox"></label>
+      <div class="hint">Ligado: <b>e******* d* b********</b>; nos últimos 10 s: <b>e******e de b*******a</b> (1ª e última letra). Desligado: só asteriscos.</div>
         </div>
       </section>
 <section class="settings-section"><div class="section-title"><svg class="ic" aria-hidden="true"><use href="#i-tv"/></svg> Tela da TV</div><div class="hint">Abre uma segunda janela só com o que os jogadores podem ver: o desenho ao vivo, cronômetro, pontos e equipes. As palavras da rodada aparecem apenas neste notebook e só entram na TV quando são acertadas.</div><button id="openTVset" type="button" class="tv-open-btn"><svg class="ic" aria-hidden="true"><use href="#i-tv"/></svg> Abrir tela da TV</button><div class="hint" id="tvStatus"></div><div class="hint">Passo a passo: 1) no Windows, aperte Win + P e escolha “Estender”; 2) clique em “Abrir tela da TV”; 3) arraste a janela para a TV; 4) dê dois cliques nela para tela cheia. Com a TV aberta, as palavras ficam visíveis aqui para quem desenha.</div></section>
@@ -490,7 +495,7 @@ canvas{grid-area:board;min-width:0;min-height:0}
           <button id="save"><svg class="ic" aria-hidden="true"><use href="#i-save"/></svg> Salvar PNG</button>
           <button id="exportGame" type="button"><svg class="ic" aria-hidden="true"><use href="#i-save"/></svg> Exportar jogo (.zip)</button>
         </div>
-        <label class="duration-setting" for="exportVideoInZip">Incluir vídeo no .zip (demora um pouco)<input id="exportVideoInZip" type="checkbox" checked></label><div class="hint" id="exportHint">O .zip traz o log completo (.txt), um PNG de cada desenho (quando foi acertado) e o vídeo do jogo, mostrando como cada desenho foi feito desde o começo.</div>
+        <label class="duration-setting" for="exportVideoInZip">Incluir vídeo no .zip (demora um pouco)<input id="exportVideoInZip" type="checkbox" checked></label><div class="hint" id="exportHint">O .zip traz o log completo (.txt), um PNG de cada desenho (quando foi acertado), o placar em PNG e o vídeo do jogo, mostrando como cada desenho foi feito desde o começo.</div>
       </section>
 </div>
     </div>
@@ -558,6 +563,10 @@ function compositeAvatar(members) {
   g.beginPath(); g.arc(h, h, h - 2, 0, Math.PI * 2); g.lineWidth = 4; g.stroke();
   const url = c.toDataURL("image/png"); if (ready) avatarCache[key] = url; return url;
 }
+let phraseHint = false;
+try { phraseHint = localStorage.getItem("phraseHint") === "1"; } catch (e) {}
+const isPhrase = w => !!w && /\s/.test(String(w).trim());
+const hintMask = (w, ends) => String(w).trim().split(/\s+/).map(t => { const a = [...t]; if (a.length < 2) return t; return a[0] + "*".repeat(Math.max(0, a.length - (ends ? 2 : 1))) + (ends ? a[a.length - 1] : ""); }).join(" ");
 function maskWord(w) { w = String(w).trim(); return w.charAt(0).toLocaleUpperCase("pt-BR") + w.slice(1).replace(/\S/g, "*"); }
 function setPauseIcon(p) { document.getElementById("pauseTimer").innerHTML = ico(p ? "play" : "pause"); }
 
@@ -1087,6 +1096,7 @@ document.getElementById("redo").addEventListener("click", () => {
 const drawingArchive = [];
 let lastDrawingPNG = null;
 function clearBoard(archive = false, info = null) {
+  if (archive) autoInk();
   if (archive && commands.length) {
     drawingArchive.push(commands.slice());
     try { lastDrawingPNG = canvas.toDataURL("image/png"); } catch (err) { lastDrawingPNG = null; }
@@ -1229,6 +1239,7 @@ const solvedPoints = [0, 0, 0, 0, 0];
 const lockedWords = [false, false, false, false, false];
 let drawsRemaining = 3;
 const wordBank = {
+  frases: ["mula sem cabeça","cavalo sem cabeça","elefante de bicicleta","galinha de óculos","girafa no elevador","tubarão de chinelo","macaco de terno","pinguim no deserto","vaca no trampolim","porco de paraquedas","gato de botas","cachorro dirigindo","jacaré de gravata","peixe fora d'água","tartaruga de patins","urso de pijama","coelho na academia","zebra de óculos escuros","polvo tocando violão","baleia de guarda-chuva","pato no skate","cobra de cachecol","leão com dor de dente","papagaio cantor","camelo na piscina","formiga carregando sofá","sapo de capacete","lobisomem de chinelo","saci jogando futebol","boneca de pano assombrada","vampiro no sol","fantasma com lençol","bruxa de vassoura quebrada","palhaço com medo","robô dançando forró","alienígena no ônibus","dinossauro no mercado","sereia na banheira","pizza voadora","hambúrguer com pernas","banana de pijama","melancia de óculos","sorvete derretendo","macarrão no cabelo","ovo andando de patinete","cenoura de capacete","batata dançarina","bolo de aniversário gigante","cachorro-quente falante","tomate de paraquedas","bolo com bigode","avião de papel","carro sem rodas","geladeira voadora","sofá no telhado","chuveiro de chocolate","bicicleta de três rodas","escada rolante quebrada","guarda-chuva furado","cadeira de balanço","homem-aranha na padaria","princesa de skate","rei de chinelo","pirata dormindo","astronauta na praia","noiva correndo","vovó de moto","papai noel no verão","bebê chefe","professor dançando","médico sem jaleco","goleiro de salto alto"],
   animais: ["cachorro","gato","cavalo","vaca","porco","galinha","pato","coelho","leão","elefante","girafa","macaco","zebra","tigre","urso","cobra","tartaruga","sapo","peixe","tubarão","baleia","golfinho","borboleta","abelha","aranha","formiga","coruja","pinguim","jacaré","canguru","ovelha","rato","tucano","caranguejo","polvo","camelo","panda","morcego","pavão","lagarta"],
   comidas: ["pizza","hambúrguer","pão","queijo","ovo","arroz","feijão","macarrão","batata frita","sorvete","bolo","chocolate","cachorro-quente","tomate","cenoura","pipoca","sanduíche","salada","sopa","coxinha","pastel","brigadeiro","leite","café","pudim","milho","brócolis","alface","cebola","lasanha","sushi","bacon","salsicha","panqueca","donut","biscoito","torrada","hot dog","espetinho","presunto"],
   filmes: ["Avatar","Barbie","Rambo","Rocky","Tarzan","Ratatouille","Encanto","Godzilla","Superman","Pocahontas","Transformers","Gladiador","Hulk","Thor","Aquaman","Titanic","Rei Leão","Frozen","Toy Story","Procurando Nemo","Shrek","Homem-Aranha","Batman","Harry Potter","Os Vingadores","Carros","Moana","Aladdin","Branca de Neve","Cinderela","Tubarão","Jurassic Park","Star Wars","Matrix","Minions","Divertida Mente","Enrolados","A Bela e a Fera","Kung Fu Panda","King Kong","E.T.","Madagascar","Up","Coco","Zootopia","Os Incríveis","Monstros S.A.","Pinóquio","Dumbo","Bambi","A Pequena Sereia","Mulan","Super Mario","Homem de Ferro","Coringa"],
@@ -1238,7 +1249,7 @@ const wordBank = {
   objetos: ["mochila","guarda-chuva","relógio","óculos","chave","carteira","celular","computador","teclado","mouse","fone","câmera","tripé","lanterna","martelo","parafusadeira","tesoura","régua","lápis","caneta","borracha","caderno","livro","garrafa","caneca","prato","talher","panela","frigideira","estojo","pente","secador","controle","carregador","durex","cadeado","binóculo","mala","capacete","bola","tablet","notebook","monitor","impressora","roteador","microfone","alto-falante","joystick","console","drone","cartão","pendrive","HD","SSD","bateria","pilha","extensão","adaptador","tomada","benjamim","RG","passaporte","moeda","cédula","calculadora","grampeador","furador","clipe","post-it","envelope","selo","pincel","tinta","giz","lousa","apagador","nível","trena","alicate","serrote","furadeira","parafuso","prego","porca","arruela","metro","isqueiro","vela","sacola","térmica","cantil","bússola","luneta","lente","grampo","saboneteira","guarda-sol","patinete","hoverboard","bicicleta","refletor","chaveiro","carimbo","corrente","interfone"]
 };
 // Cada palavra da rodada precisa ser um nome só (sem espaço; hífen pode).
-for (const k of Object.keys(wordBank)) wordBank[k] = [...new Set(wordBank[k].filter(w => /^\p{L}+(-\p{L}+)*$/u.test(w)))];
+for (const k of Object.keys(wordBank)) if (k !== "frases") wordBank[k] = [...new Set(wordBank[k].filter(w => /^\p{L}+(-\p{L}+)*$/u.test(w)))];
 
 let timerRemaining = 120;
 let timerInterval = null;
@@ -1825,17 +1836,18 @@ function updateWordDisplay() {
     const word = roundWords[i];
     const mask = document.getElementById("mask" + (i + 1));
     const button = document.querySelector('[data-solve="' + (i + 1) + '"]');
-    const solvedRow = button && button.closest(".word-row"); if (solvedRow) solvedRow.classList.toggle("solved-row", !!solvedWords[i]);
+    { const rw = button && button.closest(".word-row"); if (rw) rw.dataset.mask = word ? ((phraseHint && isPhrase(word)) ? hintMask(word, false) : word.trim().replace(/\S/g, "*")) : "*****"; }
+  const solvedRow = button && button.closest(".word-row"); if (solvedRow) solvedRow.classList.toggle("solved-row", !!solvedWords[i]);
     if (solvedWords[i]) {
       mask.textContent = (word || "Acertou!").toLocaleUpperCase("pt-BR");
-      mask.className = "masked-word solved" + (mask.textContent.length > 9 ? " long" : "");
+      mask.className = "masked-word solved" + (mask.textContent.length > 14 ? " xlong" : mask.textContent.length > 9 ? " long" : "");
       button.classList.add("solved");
       button.disabled = true;
     } else {
       const reveal = timerStarted && timerRemaining <= 10 && word && ratioOk();
-      const txt = reveal ? maskWord(word) : "*****";
+      const txt = (phraseHint && isPhrase(word)) ? (reveal ? hintMask(word, true) : hintMask(word, false)) : reveal ? maskWord(word) : (word && /\s/.test(word.trim()) ? word.trim().replace(/\S/g, "*") : "*****");
       mask.textContent = txt;
-      mask.className = "masked-word" + (reveal ? " revealed" : "") + (txt.length > 9 ? " long" : "");
+      mask.className = "masked-word" + (reveal ? " revealed" : "") + (txt.length > 14 ? " xlong" : txt.length > 9 ? " long" : "");
       button.classList.remove("solved");
       button.disabled = !timerStarted || roundFinished || !word;
     }
@@ -1893,8 +1905,17 @@ document.getElementById("pauseTimer").addEventListener("click", () => {
   document.getElementById("pauseTimer").setAttribute("aria-label", timerPaused ? "Retomar cronômetro" : "Pausar cronômetro");
   timerValue.classList.toggle("paused", timerPaused);
 });
+// Cor da tinta automática: branca em fundo escuro, preta em fundo claro
+function autoInk() {
+  const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(currentBoardColor());
+  if (!m) return;
+  const lum = 0.299 * parseInt(m[1], 16) + 0.587 * parseInt(m[2], 16) + 0.114 * parseInt(m[3], 16);
+  const btn = document.querySelector('[data-color="' + (lum < 140 ? "#ffffff" : "#000000") + '"]');
+  if (btn) btn.click();
+}
 function applyCanvasBackground() {
   const color = currentBoardColor();
+  autoInk();
   document.querySelector(".canvas-wrap").style.background = color;
   document.querySelector("main").style.background = color;
   canvas.style.background = color;
@@ -1908,18 +1929,19 @@ const activeThemes = document.getElementById("activeThemes");
 const themeCheckboxes = [...themeOptions.querySelectorAll('input[type="checkbox"]')];
 const allThemesCheckbox = themeOptions.querySelector('input[value="todos"]');
 const individualThemeCheckboxes = themeCheckboxes.filter(input => input.value !== "todos");
+const regularThemeCheckboxes = individualThemeCheckboxes.filter(input => input.value !== "frases"); // "Todos os temas" não inclui as frases
 function getSelectedThemes() {
   return individualThemeCheckboxes.filter(input => input.checked).map(input => input.value);
 }
-const themeLabels = {frutas:"Frutas", esporte:"Esporte", casa:"Casa", objetos:"Objetos", animais:"Animais", comidas:"Comidas", filmes:"Filmes"};
+const themeLabels = {frases:"Frases aleatórias", frutas:"Frutas", esporte:"Esporte", casa:"Casa", objetos:"Objetos", animais:"Animais", comidas:"Comidas", filmes:"Filmes"};
 function updateThemeDisplay(changedInput = null) {
   if (changedInput === allThemesCheckbox) {
-    individualThemeCheckboxes.forEach(input => { input.checked = allThemesCheckbox.checked; });
+    regularThemeCheckboxes.forEach(input => { input.checked = allThemesCheckbox.checked; });
   } else {
-    allThemesCheckbox.checked = individualThemeCheckboxes.every(input => input.checked);
+    allThemesCheckbox.checked = regularThemeCheckboxes.every(input => input.checked);
   }
   const themes = getSelectedThemes();
-  activeThemes.textContent = themes.length === individualThemeCheckboxes.length ? "Todos os temas" : themes.length ? themes.map(theme => themeLabels[theme]).join(" + ") : "Nenhum tema";
+  activeThemes.textContent = themes.length === regularThemeCheckboxes.length && !themes.includes("frases") ? "Todos os temas" : themes.length ? themes.map(theme => themeLabels[theme]).join(" + ") : "Nenhum tema";
   drawButton.disabled = drawsRemaining <= 0 || timerStarted || roundFinished || themes.length === 0;
 }
 themeOptions.addEventListener("change", event => updateThemeDisplay(event.target));
@@ -2271,6 +2293,7 @@ document.getElementById("exportGame").addEventListener("click", async () => {
     const enc = new TextEncoder(), files = [];
     files.push({ name: "log-do-jogo.txt", data: enc.encode("﻿" + buildGameText()) });
     gameDrawings.forEach((d, i) => { if (d.png) files.push({ name: "desenhos/" + drawFileName(d, i) + ".png", data: dataUrlToBytes(d.png) }); });
+    try { files.push({ name: sessionOver ? "placar-final.png" : "placar-parcial.png", data: dataUrlToBytes(await scoreboardPNG()) }); } catch (e) {}
     let note = "";
     const wantVideo = document.getElementById("exportVideoInZip").checked;
     if (wantVideo && gameDrawings.length) {
@@ -2333,7 +2356,7 @@ updateHistoryButtons();
 })();
 
 // ===== Tela da TV: segunda janela (sem as palavras), sincronizada ao vivo com este notebook =====
-const TV_CSS = '\nbody.tv{background:#1d1d3f;display:flex}\nbody.tv button{display:none!important}\nbody.tv main{flex:1;min-width:0;min-height:0;display:flex;background:#1d1d3f}\nbody.tv .canvas-wrap{grid-template-columns:minmax(0,1fr)!important;grid-template-areas:"top" "turn" "board" "teams"!important;margin:10px;flex:1}\nbody.tv canvas{grid-area:board;display:block;width:100%;height:100%;cursor:none}\n#tvOv .results-overlay{position:fixed!important;inset:0;z-index:50}\n#tvPaused{position:fixed;top:14px;right:18px;z-index:60;background:#ffd34d;color:#3d2852;font-weight:900;font-size:24px;padding:8px 18px;border-radius:14px;box-shadow:0 4px 0 #bb7028}\n#tvHint{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:70;background:#000c;color:#fff;font:700 15px ui-rounded,system-ui,sans-serif;padding:9px 16px;border-radius:12px;text-align:center}\n#tvLost{position:fixed;inset:0;z-index:90;background:#1d1d3ff2;color:#fff;font:800 26px ui-rounded,system-ui,sans-serif;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px}\n[hidden]{display:none!important}\n';
+const TV_CSS = '\nbody.tv{background:#1d1d3f;display:flex}\nbody.tv button{display:none!important}\nbody.tv main{flex:1;min-width:0;min-height:0;display:flex;background:#1d1d3f}\nbody.tv .canvas-wrap{grid-template-columns:minmax(0,1fr)!important;grid-template-areas:"top" "turn" "board" "teams"!important;margin:10px;flex:1}\nbody.tv canvas{grid-area:board;display:block;width:100%;height:100%;cursor:none}\n#tvOv .results-overlay{position:fixed!important;inset:0;z-index:50}\n#tvPaused{position:fixed;top:14px;right:18px;z-index:60;background:#ffd34d;color:#3d2852;font-weight:900;font-size:24px;padding:8px 18px;border-radius:14px;box-shadow:0 4px 0 #bb7028}\n#tvLost{position:fixed;inset:0;z-index:90;background:#1d1d3ff2;color:#fff;font:800 26px ui-rounded,system-ui,sans-serif;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px}\n[hidden]{display:none!important}\n';
 const tvClientSrc = null;
 let tvReady = false, tvTick = -1, tvBusy = false, tvDirtyTeams = true, tvLast = {}, tvAssets = new Map(), tvNew = [];
 
@@ -2402,8 +2425,6 @@ function tvClient() {
     }
   });
   document.addEventListener("dblclick", () => { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {}); });
-  document.addEventListener("fullscreenchange", () => { $("tvHint").hidden = true; });
-  setTimeout(() => { $("tvHint").hidden = true; }, 25000);
   setInterval(() => { $("tvLost").hidden = !!(window.opener && !window.opener.closed); }, 1000);
   try { opener.postMessage({ t: "ready" }, "*"); } catch (e) {}
 }
@@ -2413,7 +2434,7 @@ function tvDoc() {
   const sprite = document.querySelector("body > svg").outerHTML;
   return '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Minha Lousa — TV</title><style>' + css + TV_CSS + '</style></head><body class="tv">' + sprite +
     '<main><div class="canvas-wrap"><canvas id="tvCanvas"></canvas><section class="game-topbar" id="tvTop"></section><div id="tvTurn" style="display:contents"></div><section class="bottom-bar" id="tvBottom"></section></div></main>' +
-    '<div id="tvOv"></div><div id="tvPaused" hidden>⏸ PAUSADO</div><div id="tvHint">Arraste esta janela para a TV e dê dois cliques para ativar a tela cheia</div><div id="tvLost" hidden>Conexão com o notebook perdida.<br>Clique em “Tela da TV” no jogo para reconectar.</div>' +
+    '<div id="tvOv"></div><div id="tvPaused" hidden>⏸ PAUSADO</div><div id="tvLost" hidden>Conexão com o notebook perdida.<br>Clique em “Tela da TV” no jogo para reconectar.</div>' +
     '<script>(' + tvClient.toString() + ')()<\/script></body></html>';
 }
 function updateTvUI() {
@@ -2475,6 +2496,54 @@ function updateUsedInfo() {
 }
 document.getElementById("resetUsed").addEventListener("click", () => { usedWords.clear(); saveUsed(); updateUsedInfo(); });
 updateUsedInfo();
+
+// ===== Placar em PNG =====
+function loadImg(src) { return new Promise(res => { if (!src) return res(null); const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; }); }
+function rrect(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+async function scoreboardPNG() {
+  const lb = buildLeaderboard(), aw = computeAwards(), list = lb.leaderboard, indiv = lb.individualMode;
+  const W = 1200, rowH = 78, top = 150, awH = 190, H = top + list.length * rowH + 30 + awH + 70;
+  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const g = cv.getContext("2d"), F = "system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif";
+  const bg = g.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, "#2b2b63"); bg.addColorStop(1, "#14142e");
+  g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  g.textBaseline = "middle"; g.textAlign = "center"; g.fillStyle = "#ffd34d"; g.font = "800 46px " + F;
+  g.fillText((sessionOver ? "Classificação final" : "Classificação parcial") + (indiv ? " · individual" : " · por equipe"), W / 2, 62);
+  g.fillStyle = "#9ff6e9"; g.font = "600 22px " + F;
+  g.fillText("Minha Lousa · " + new Date().toLocaleDateString("pt-BR") + " · " + (turnNumber || 0) + " rodada(s) jogada(s)", W / 2, 108);
+  const imgs = await Promise.all(list.map(e => loadImg(indiv ? playerPhoto(e.name) : teamPhoto(e.team))));
+  const medal = { 1: "#ffd34d", 2: "#d5dbe6", 3: "#e0975a" };
+  list.forEach((e, i) => {
+    const y = top + i * rowH, h = rowH - 10;
+    g.fillStyle = e.rank <= 3 ? "rgba(255,211,77,.14)" : "rgba(255,255,255,.07)"; rrect(g, 60, y, W - 120, h, 18); g.fill();
+    g.fillStyle = medal[e.rank] || "#6b6dc9"; g.beginPath(); g.arc(112, y + h / 2, 24, 0, 7); g.fill();
+    g.fillStyle = e.rank <= 3 ? "#3d2852" : "#fff"; g.font = "800 26px " + F; g.textAlign = "center"; g.fillText(e.rank + "º", 112, y + h / 2 + 1);
+    if (imgs[i]) { g.save(); g.beginPath(); g.arc(188, y + h / 2, 26, 0, 7); g.clip(); g.drawImage(imgs[i], 162, y + h / 2 - 26, 52, 52); g.restore(); }
+    g.textAlign = "left"; g.fillStyle = "#fff"; g.font = "700 30px " + F; g.fillText(e.name, 234, y + h / 2 - (indiv ? 0 : 9));
+    if (!indiv) { const b = bestInTeam(e.team); if (b) { g.fillStyle = "#c9cbff"; g.font = "500 18px " + F; g.fillText(b.short || b.text, 234, y + h / 2 + 18); } }
+    g.textAlign = "right"; g.fillStyle = "#ffd34d"; g.font = "800 34px " + F; g.fillText(e.score + (e.score === 1 ? " ponto" : " pontos"), W - 90, y + h / 2 + 1);
+  });
+  const ay = top + list.length * rowH + 20, bw = (W - 120 - 24) / 2;
+  const card = (x, title, w, detail) => {
+    g.fillStyle = "rgba(255,255,255,.08)"; rrect(g, x, ay, bw, awH, 18); g.fill();
+    g.textAlign = "center"; g.fillStyle = "#9ff6e9"; g.font = "700 24px " + F; g.fillText(title, x + bw / 2, ay + 34);
+    if (!w) { g.fillStyle = "#ccd"; g.font = "500 22px " + F; g.fillText("Ainda sem vencedor", x + bw / 2, ay + 100); return; }
+    g.fillStyle = "#ffd34d"; g.font = "800 36px " + F; g.fillText(w.name, x + bw / 2, ay + 86);
+    g.fillStyle = "#fff"; g.font = "500 20px " + F; g.fillText(detail, x + bw / 2, ay + 130);
+  };
+  const dw = aw.drawWinners[0], gw = aw.guessWinners[0];
+  card(60, "🎨 Melhor desenhista", dw, dw ? "Média de " + fmt1(dw.avg) + " pts por rodada desenhada" : "");
+  card(60 + bw + 24, "🎯 Quem mais acertou", gw, gw ? gw.guessed + (gw.guessed === 1 ? " palavra descoberta" : " palavras descobertas") : "");
+  g.textAlign = "center"; g.fillStyle = "#8a8cc8"; g.font = "500 18px " + F; g.fillText("Gerado pelo jogo Minha Lousa", W / 2, H - 28);
+  return cv.toDataURL("image/png");
+}
+document.getElementById("finalPng").addEventListener("click", async () => {
+  try { const u = await scoreboardPNG(); deliver(new Blob([dataUrlToBytes(u)], { type: "image/png" }), (sessionOver ? "placar-final" : "placar-parcial") + ".png"); }
+  catch (err) { alert("Não foi possível exportar o placar: " + err.message); }
+});
+const phraseHintEl = document.getElementById("phraseHint");
+phraseHintEl.checked = phraseHint;
+phraseHintEl.addEventListener("change", () => { phraseHint = phraseHintEl.checked; try { localStorage.setItem("phraseHint", phraseHint ? "1" : "0"); } catch (e) {} updateWordDisplay(); });
 </script>
 
 <div id="exportBanner" hidden></div>
