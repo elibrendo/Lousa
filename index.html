@@ -149,6 +149,10 @@ button.active{background:#13a99e;border-color:#7af2e6;color:#fff}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #ffd65a;outline-offset:2px}
 hr{border-top:1px solid #4c4d80}
 .status{background:#30315c;border-color:#55568c;border-radius:10px;color:#d9dcff}
+.draw-toast{position:fixed;left:50%;top:45%;transform:translate(-50%,-50%) scale(.9);background:#1d1d3fe6;color:#fff;font-weight:800;font-size:18px;padding:14px 22px;border-radius:14px;border:2px solid #ffd34d;box-shadow:0 8px 24px #0006;pointer-events:none;opacity:0;transition:opacity .2s,transform .2s;z-index:60}
+.draw-toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.resume-info{margin:10px 0 4px;line-height:1.5;color:#d9dcff}
+.resume-info b{color:#ffd34d}
 .tool-grid button,.shape-list button{border-radius:11px;background:#393a70}
 button.swatch{box-shadow:0 2px 0 #181833;border-color:#8a8bb2}
 button.swatch.selected{outline-color:#ffd65a}
@@ -482,6 +486,7 @@ button.swatch{width:24px!important;height:24px!important}
   </section>
   <div class="results-overlay" id="resultsOverlay" hidden><div class="results-card" role="dialog" aria-modal="true" aria-labelledby="resultsTitle"><h2 id="resultsTitle">Rodada encerrada</h2><div class="results-score" id="resultsScore">Pontuação final: 0 pontos</div><div class="results-list" id="resultsList"></div><button id="closeResults">Fechar</button></div></div>
   <div class="results-overlay" id="whoOverlay" hidden><div class="results-card who-card" role="dialog" aria-modal="true" aria-labelledby="whoTitle"><h2 id="whoTitle">Quem acertou?</h2><div class="hint" id="whoHint"></div><div id="whoList"></div><div class="final-actions"><button id="whoOk" type="button" disabled>Confirmar</button></div></div></div>
+  <div class="results-overlay" id="resumeOverlay" hidden><div class="results-card" role="dialog" aria-modal="true" aria-labelledby="resumeTitle"><h2 id="resumeTitle">💾 Partida salva encontrada</h2><div class="resume-info" id="resumeInfo"></div><div class="final-actions"><button id="resumeYes" type="button">Continuar partida</button><button id="resumeNo" type="button">Começar nova</button></div></div></div>
   <div class="results-overlay" id="finalOverlay" hidden><div class="results-card final-card" role="dialog" aria-modal="true" aria-labelledby="finalTitle"><h2 id="finalTitle"><svg class="ic" aria-hidden="true"><use href="#i-trophy"/></svg> Classificação final</h2><div class="podium" id="podium"></div><div class="podium-rest" id="podiumRest" hidden></div><div class="tiebreak" id="tiebreak" hidden></div><div class="awards" id="awards"></div><div class="final-actions"><button id="finalPng" type="button">Exportar placar (.png · story)</button><button id="finalVideo" type="button">Exportar vídeo do placar (story)</button><button id="finalNew" type="button">Nova sessão</button><button id="finalClose" type="button">Fechar</button></div></div></div>
   <aside class="guess-panel" id="wordsSheet" aria-label="Rodada, palavras e início do jogo">
     <div class="sheet-head"><div class="sheet-title"><svg class="ic" aria-hidden="true"><use href="#i-words"/></svg> Rodada</div><button id="closeWords" type="button" aria-label="Fechar"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button></div>
@@ -1052,6 +1057,7 @@ function floodFill(pos) {
 function pointerDown(e) {
   e.preventDefault();
   if (e.isPrimary === false) return;
+  if (!timerStarted || roundFinished) { blockedDrawHint(); return; } // só desenha com a rodada em andamento
   const pos = getPos(e);
   if (tool === "picker") {
     const px = Math.max(0, Math.min(canvas.width - 1, Math.floor(pos.x * dpr)));
@@ -1171,6 +1177,15 @@ canvas.addEventListener("pointermove", pointerMove);
 canvas.addEventListener("pointerup", finishPointer);
 canvas.addEventListener("pointercancel", finishPointer);
 
+let blockedHintTimer = null;
+function blockedDrawHint() {
+  let el = document.getElementById("drawToast");
+  if (!el) { el = document.createElement("div"); el.id = "drawToast"; el.className = "draw-toast"; document.body.appendChild(el); }
+  el.textContent = "✋ Inicie a rodada para desenhar";
+  el.classList.add("show");
+  clearTimeout(blockedHintTimer);
+  blockedHintTimer = setTimeout(() => el.classList.remove("show"), 1600);
+}
 let silentTool = false;
 function forcePen() { const b = document.querySelector('[data-tool="pen"]'); if (!b || tool === "pen") return; silentTool = true; b.click(); silentTool = false; }
 document.querySelectorAll("[data-tool]").forEach(button => {
@@ -1519,11 +1534,16 @@ function applyTeamMode(silent) {
   }
   appliedTeamMode=mode;appliedSignature=currentSignature();if(silent!==true)SFX.teams();
   teamNames=mode==='one'?teamMembers.map((m,i)=>m[0]+(appliedAllTimes>1?' ('+(Math.floor(i/Math.max(1,teamMembers.length/appliedAllTimes))+1)+'ª vez)':'')):teamMembers.map(m=>m.join(' & '));teamScores=teamNames.map(()=>0);individualScores=Object.create(null);teamMembers.flat().forEach(name=>{individualScores[name]=0;});stats=freshStats();turnOrder=[];turnNumber=0;sessionOver=false;roleSchedule=[];
+  buildTeamCards();
+  renderTeams();
+  saveSession();
+}
+function buildTeamCards() {
+  const mode=appliedTeamMode;
   delete document.getElementById('turnPhoto').dataset.team;
   teamCardsBox.replaceChildren();
   teamNames.forEach((name,t)=>{const card=document.createElement('div');card.className='team-card';card.dataset.team=t;card.innerHTML='<span class="team-badge" id="teamBadge'+t+'">'+(t+1)+'</span><div class="team-info"><div class="team-name"></div><div class="team-score" id="teamScore'+t+'">0</div><div class="team-rounds" id="teamRounds'+t+'"></div></div><div class="team-status wait" id="teamStatus'+t+'"></div>';card.querySelector('.team-name').textContent=name;{const src=mode==='couples'?couplePhotoSources[appliedCouples[t]]:mode==='one'?playerPhoto(teamMembers[t][0]):compositeAvatar(teamMembers[t]);if(src){const photo=document.createElement('img');photo.src=src;photo.alt=name;card.insertBefore(photo,card.querySelector('.team-info'));}}teamCardsBox.appendChild(card);});
   const select=document.getElementById('adjTeam');select.replaceChildren();teamNames.forEach((name,t)=>{const o=document.createElement('option');o.value=t;o.textContent=name;select.appendChild(o);});
-  renderTeams();
 }
 let savedTimes = null, durAuto = false, savedDur = null;
 // "Todos contra todos": quantidade de rodadas é fixa (todo mundo joga contra todo mundo), então o campo fica travado.
@@ -1738,6 +1758,7 @@ function resetSession() {
   turnOrder = []; turnNumber = 0; sessionOver = false; roleSchedule = [];
   prepareNextRound();
   renderTeams();
+  saveSession();
 }
 function disarmOrder() { orderArmed = false; clearTimeout(orderArmTimer); drawOrderButton.innerHTML = ico("dice") + " Sortear início"; }
 drawOrderButton.addEventListener("click", () => {
@@ -1790,6 +1811,7 @@ function adjustScore(sign) {
   if (teamScores[t] !== before) adjustLog.push({ time: new Date(), team: t, delta: teamScores[t] - before, total: teamScores[t] });
   if (isAllMode() && teamScores[t] !== before) { const d = teamScores[t] - before; (teamMembers[t] || []).forEach(n => { individualScores[n] = Math.max(0, (individualScores[n] || 0) + d); }); }
   renderTeams();
+  saveSession();
 }
 document.getElementById("adjPlus").addEventListener("click", () => adjustScore(1));
 document.getElementById("adjMinus").addEventListener("click", () => adjustScore(-1));
@@ -1996,6 +2018,7 @@ function finishRound() {
     nextTeam = currentTeam();
     nextRoles = currentRoles();
     renderTeams();
+    saveSession();
   }
   document.getElementById("resultsTitle").textContent = playedTeam !== null ? "Rodada encerrada — " + teamNames[playedTeam] + (playedRoles ? (isAllMode() ? " (" + turnNumber + "/" + totalTurns() + ")" : " (" + playedRoles.round + "/" + roundsPerTeam() + ")") : "") : "Rodada encerrada";
   refreshDrawControls();
@@ -3027,6 +3050,7 @@ function openWho(team, logged) {
       const rowEl = document.querySelector('#resultsList [data-wi="' + i + '"]'); if (rowEl) rowEl.textContent += " — quem acertou: " + g;
     });
     renderTeams();
+    saveSession();
     document.getElementById("resultsOverlay").hidden = false;
   };
 }
@@ -3081,9 +3105,89 @@ document.getElementById("redrawPairs").addEventListener("click", () => {
   if (turnNumber > 0 && !sessionOver && !confirm("Sortear as duplas de novo recomeça o jogo atual. Continuar?")) return;
   applyTeamMode();
 });
+// ===== Salvamento automático da partida (até a última rodada encerrada) =====
+// Guarda no IndexedDB (cabe os desenhos em PNG); ao abrir, pergunta se quer continuar.
+const SaveDB = (() => {
+  let dbp = null;
+  const db = () => dbp || (dbp = new Promise((res, rej) => {
+    const r = indexedDB.open("lousa", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("kv");
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  }));
+  const tx = (mode, fn) => db().then(d => new Promise((res, rej) => {
+    const t = d.transaction("kv", mode), req = fn(t.objectStore("kv"));
+    t.oncomplete = () => res(req.result); t.onerror = () => rej(t.error);
+  }));
+  return { get: k => tx("readonly", s => s.get(k)), put: (k, v) => tx("readwrite", s => s.put(v, k)), del: k => tx("readwrite", s => s.delete(k)) };
+})();
+const SAVE_KEY = "partida";
+const SAVE_FIELDS = ["teamMode", "playerGroup", "customGrouping", "durationSeconds", "roundsPerTeam", "points1", "points2", "points3", "points4", "points5",
+  ...Array.from({length: 8}, (_, i) => "player" + (i + 1)), ...Array.from({length: 8}, (_, i) => "gender" + (i + 1))].filter(id => document.getElementById(id));
+let persistReady = false; // só salva depois de decidir (na abertura) se continua a partida antiga
+function saveSession() {
+  if (!persistReady) return;
+  try {
+    if (turnNumber === 0 && !sessionOver) { SaveDB.del(SAVE_KEY).catch(() => {}); return; }
+    const snap = {
+      v: 1, savedAt: new Date(),
+      fields: Object.fromEntries(SAVE_FIELDS.map(id => [id, document.getElementById(id).value])),
+      themes: getSelectedThemes(), words: confirmedWordsCount, groupKey,
+      appliedTeamMode, appliedSignature, appliedAllTimes, appliedCouples,
+      teamNames, teamMembers, teamScores, individualScores: { ...individualScores }, stats,
+      turnOrder, turnNumber, sessionOver, roleSchedule,
+      gameLog, adjustLog, gameDrawings, sessionStartedAt
+    };
+    SaveDB.put(SAVE_KEY, typeof structuredClone === "function" ? structuredClone(snap) : snap).catch(() => {});
+  } catch (e) {}
+}
+function restoreSession(s) {
+  Object.entries(s.fields || {}).forEach(([id, v]) => { const el = document.getElementById(id); if (el) el.value = v; });
+  groupKey = s.groupKey || groupKey;
+  syncGroupModes(); document.getElementById("teamMode").value = s.fields.teamMode;
+  document.getElementById("customTeamGroups").hidden = s.fields.teamMode !== "custom";
+  COUPLES.forEach((_, i) => { document.getElementById("couple" + i).checked = s.appliedCouples.includes(i); });
+  individualThemeCheckboxes.forEach(cb => { cb.checked = (s.themes || []).includes(cb.value); });
+  updateThemeDisplay();
+  wordsSelect.value = String(s.words); confirmedWordsCount = s.words; syncWordCountUI(); refreshWordsConfirm();
+  ({ appliedTeamMode, appliedSignature, appliedAllTimes, appliedCouples, teamNames, teamMembers, teamScores, stats, turnOrder, turnNumber, sessionOver, roleSchedule } = s);
+  individualScores = Object.assign(Object.create(null), s.individualScores);
+  gameLog.splice(0, Infinity, ...s.gameLog); adjustLog.splice(0, Infinity, ...s.adjustLog); gameDrawings.splice(0, Infinity, ...s.gameDrawings);
+  sessionStartedAt = s.sessionStartedAt;
+  const names = Array.from({length: 8}, (_, i) => document.getElementById("player" + (i + 1)).value.trim());
+  setPhotoIdx(names); setGenders(names, false);
+  buildTeamCards();
+  refreshIdleTimer(); refreshDrawControls(); updateGroupHint();
+  renderTeams();
+  if (sessionOver) { showFinal(); return; }
+  const btn = document.getElementById("setWords");
+  btn.innerHTML = ico("play") + " Iniciar jogo"; btn.classList.add("ready-to-play");
+  showTurnAnnouncement();
+}
+function offerResume() {
+  SaveDB.get(SAVE_KEY).then(s => {
+    if (!s || s.v !== 1 || !(s.turnNumber > 0 || s.sessionOver)) { persistReady = true; return; }
+    const total = s.turnNumber;
+    const placar = s.teamNames.map((n, t) => ({ n, p: s.teamScores[t] }));
+    const indiv = s.appliedTeamMode === "all" || s.appliedTeamMode === "one";
+    const rows = indiv ? Object.entries(s.individualScores).map(([n, p]) => ({ n, p })) : placar;
+    rows.sort((a, b) => b.p - a.p);
+    document.getElementById("resumeInfo").innerHTML =
+      "Salva em " + esc(s.savedAt.toLocaleString("pt-BR")) + "<br>" +
+      (s.sessionOver ? "<b>Partida encerrada</b> — " : "") + "<b>" + total + "</b> rodada(s) já jogada(s)<br><br>" +
+      rows.slice(0, 8).map(r => esc(r.n) + ": <b>" + r.p + "</b>").join("<br>");
+    const ov = document.getElementById("resumeOverlay");
+    ov.hidden = false;
+    document.getElementById("resumeYes").onclick = () => { ov.hidden = true; persistReady = true; try { restoreSession(s); } catch (e) { console.error(e); alert("Não foi possível restaurar a partida salva."); } };
+    document.getElementById("resumeNo").onclick = () => { ov.hidden = true; persistReady = true; SaveDB.del(SAVE_KEY).catch(() => {}); };
+  }).catch(() => { persistReady = true; });
+}
+// Pede confirmação ao fechar/recarregar no meio de uma rodada (ela ainda não foi salva).
+window.addEventListener("beforeunload", e => { if (timerStarted && !roundFinished) { e.preventDefault(); e.returnValue = ""; } });
+
 fillGroup("padrao");
 document.getElementById("teamMode").value = "couples";
 applyTeamMode(true);
+offerResume();
 </script>
 
 <div id="exportBanner" hidden></div>
