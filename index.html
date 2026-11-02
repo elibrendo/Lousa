@@ -320,6 +320,8 @@ canvas{grid-area:board;min-width:0;min-height:0}
 
 /* ===== v0.18 ===== */
 .who-card{max-height:94%;overflow:auto}.who-card .hint{margin:4px 0 8px;color:#c9cbff}.who-row{margin:10px 0;padding:9px 10px;border-radius:12px;background:rgba(255,255,255,.07)}.who-word{font-weight:800;color:#ffd34d;margin-bottom:7px}.who-word small{color:#9ff6e9;font-weight:700;margin-left:6px}.who-chips{display:flex;flex-wrap:wrap;gap:6px}.who-chip{padding:7px 12px;border-radius:999px;border:2px solid #6264a9;background:#2c2d59;color:#fff;font-weight:700;cursor:pointer}.who-chip.on{background:#157e6c;border-color:#4fe3bd}
+.who-chip.none{border-style:dashed}
+.who-chip.none.on{background:#7a2d3a;border-color:#ff7a8a}
 .pf{display:flex;gap:4px;align-items:center}.pf input{flex:1;min-width:0}.pf select{flex:0 0 52px;width:52px!important;padding:0 2px!important;min-height:0}
 #exportBanner{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:200;background:#ffd34d;color:#3d2852;font-weight:900;font-size:15px;padding:9px 18px;border-radius:14px;box-shadow:0 4px 0 #bb7028;max-width:92vw;text-align:center}
 .final-card{max-height:none!important;overflow:visible!important}
@@ -3022,6 +3024,20 @@ document.getElementById("finalVideo").addEventListener("click", async () => {
 });
 
 // ===== "1 contra todos": quem desenhou diz quem acertou cada palavra =====
+const NOBODY = "\u0000ninguem";
+// "Ninguém acertou": a palavra volta a contar como não descoberta e os pontos dela saem da rodada.
+function unsolveWho(team, logged, turnNo, i, pts) {
+  teamScores[team] = Math.max(0, teamScores[team] - pts);
+  const st = stats[team][0]; st.drawPoints -= pts; st.drawSecs += roundStartRemaining - (solvedAt[i] || 0);
+  if (logged && logged.result) {
+    logged.result.points -= pts; logged.teamTotal = teamScores[team];
+    const w = logged.result.words[i]; if (w) { w.solved = false; w.points = 0; w.elapsed = null; w.remaining = null; }
+  }
+  gameDrawings.forEach(d => { if (d.kind === "acertou" && d.turn === turnNo && d.wi === i) { d.kind = "nao-acertou"; d.pts = 0; d.secs = null; } });
+  const rowEl = document.querySelector('#resultsList [data-wi="' + i + '"]'); if (rowEl) rowEl.textContent = "Palavra " + (i + 1) + " (" + roundWords[i] + "): ninguém acertou";
+  const total = logged && logged.result ? logged.result.points : 0;
+  document.getElementById("resultsScore").textContent = "Pontuação final: " + total + (total === 1 ? " ponto" : " pontos");
+}
 function openWho(team, logged) {
   const members = teamMembers[team] || [], drawer = members[0], guessers = members.slice(1);
   const turnNo = turnNumber; // turnNumber já avançou: a rodada que acabou é a de número turnNo
@@ -3034,7 +3050,7 @@ function openWho(team, logged) {
     const row = document.createElement("div"); row.className = "who-row";
     const w = document.createElement("div"); w.className = "who-word"; w.textContent = roundWords[i]; const sm = document.createElement("small"); sm.textContent = "+" + solvedPoints[i] + " pt" + (solvedPoints[i] === 1 ? "" : "s"); w.appendChild(sm);
     const chips = document.createElement("div"); chips.className = "who-chips";
-    guessers.forEach(g => { const b = document.createElement("button"); b.type = "button"; b.className = "who-chip"; b.textContent = g; b.addEventListener("click", () => { pick[i] = g; [...chips.children].forEach(c => c.classList.toggle("on", c === b)); refresh(); }); chips.appendChild(b); });
+    [...guessers, NOBODY].forEach(g => { const b = document.createElement("button"); b.type = "button"; b.className = "who-chip" + (g === NOBODY ? " none" : ""); b.textContent = g === NOBODY ? "🚫 Ninguém acertou" : g; b.addEventListener("click", () => { pick[i] = g; [...chips.children].forEach(c => c.classList.toggle("on", c === b)); refresh(); }); chips.appendChild(b); });
     row.append(w, chips); list.appendChild(row);
   });
   refresh(); ov.hidden = false;
@@ -3042,6 +3058,7 @@ function openWho(team, logged) {
     ok.onclick = null; ov.hidden = true;
     solved.forEach(i => {
       const g = pick[i], pts = solvedPoints[i] || 0, gi = members.indexOf(g);
+      if (g === NOBODY) { unsolveWho(team, logged, turnNo, i, pts); return; }
       individualScores[g] = (individualScores[g] || 0) + pts;
       individualScores[drawer] = (individualScores[drawer] || 0) + pts;
       if (gi >= 0) { stats[team][gi].guessed++; stats[team][gi].guessSecs += solvedAt[i] || 0; stats[team][gi].guessHits++; }
