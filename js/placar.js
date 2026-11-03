@@ -1,5 +1,6 @@
 // Classificação e prêmios
 const fmt1 = n => n.toFixed(1).replace(".", ",");
+function formatPoints(n) { return Number(n.toFixed(2)).toLocaleString("pt-BR", { maximumFractionDigits: 2 }); }
 
 // ---------- Desempate ----------
 // 1º pontos · 2º menor média de tempo para acertar · 3º menor média de desenho (tempo até acertarem o desenho)
@@ -31,7 +32,7 @@ function buildLeaderboard() {
   entries.forEach(e => Object.assign(e, metricsOf(e)));
   const same = (x, y) => x === y || Math.abs(x - y) < 1e-9;
   const cmp = (x, y) => {
-    if (x.score !== y.score) return y.score - x.score;
+    if (!same(x.score, y.score)) return y.score - x.score;
     if (!same(x.guessAvg, y.guessAvg)) return x.guessAvg < y.guessAvg ? -1 : 1;
     if (!same(x.drawAvg, y.drawAvg)) return x.drawAvg < y.drawAvg ? -1 : 1;
     return 0;
@@ -40,7 +41,11 @@ function buildLeaderboard() {
   entries.forEach(e => { e.rank = 1 + entries.filter(o => cmp(o, e) < 0).length; });
   const notes = [];
   const groups = new Map();
-  entries.forEach(e => { if (!groups.has(e.score)) groups.set(e.score, []); groups.get(e.score).push(e); });
+  entries.forEach(e => {
+    const key = Math.round(e.score * 1e9) / 1e9;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(e);
+  });
   groups.forEach((g, score) => {
     if (g.length < 2) return;
     if (g.every(e => e.guessAvg === Infinity && e.drawAvg === Infinity)) return;
@@ -69,7 +74,7 @@ function renderTiebreakNotes(notes) {
   const MAX = 5; let shown = 0, total = 0; notes.forEach(n => total += n.lines.length);
   notes.forEach(n => {
     if (shown >= MAX) return;
-    const head = document.createElement("div"); head.className = "tb-head"; head.textContent = "Empate em " + n.score + (n.score === 1 ? " ponto" : " pontos"); box.appendChild(head);
+    const head = document.createElement("div"); head.className = "tb-head"; head.textContent = "Empate em " + formatPoints(n.score) + (n.score === 1 ? " ponto" : " pontos"); box.appendChild(head);
     n.lines.forEach(t => { if (shown >= MAX) return; shown++; const l = document.createElement("div"); l.className = "tb-line"; l.textContent = "• " + t; box.appendChild(l); });
   });
   const foot = document.createElement("div"); foot.className = "tb-foot";
@@ -96,7 +101,7 @@ function showFinal() {
     if (true) { const img=document.createElement("img"); img.src=individualMode ? playerPhoto(entry.name) : teamPhoto(entry.team); img.alt=entry.name; img.hidden=!img.src; col.appendChild(medal); col.appendChild(img); }
     else col.appendChild(medal);
     const label = document.createElement("div"); label.className = "podium-name"; label.textContent = "TOP " + r + " · " + entry.name;
-    const score = document.createElement("div"); score.className = "podium-score"; score.textContent = entry.score + (entry.score === 1 ? " ponto" : " pontos");
+    const score = document.createElement("div"); score.className = "podium-score"; score.textContent = formatPoints(entry.score) + (entry.score === 1 ? " ponto" : " pontos");
     const step = document.createElement("div"); step.className = "podium-step rank" + r; step.textContent = r + "º";
     col.append(label, score);
     if (!individualMode) { const b = bestInTeam(entry.team); if (b) { const mvp = document.createElement("div"); mvp.className = "podium-mvp"; mvp.textContent = b.text; col.appendChild(mvp); } }
@@ -114,7 +119,7 @@ function showFinal() {
       const pos = document.createElement("b"); pos.textContent = e.rank + "º";
       const nm = document.createElement("span"); nm.className = "n"; nm.textContent = e.name;
       if (!individualMode) { const b = bestInTeam(e.team); if (b && !b.equal) { const sm = document.createElement("small"); sm.textContent = b.short; nm.appendChild(sm); } }
-      const sc = document.createElement("em"); sc.textContent = e.score + (e.score === 1 ? " pt" : " pts");
+      const sc = document.createElement("em"); sc.textContent = formatPoints(e.score) + (e.score === 1 ? " pt" : " pts");
       item.append(pos, nm, sc); list.appendChild(item);
     });
     rest.append(t, list);

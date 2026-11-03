@@ -33,7 +33,7 @@ async function scoreboardPNG() {
     const sg = g.createLinearGradient(0, sy, 0, baseY); sg.addColorStop(0, stepCol[e.rank][0]); sg.addColorStop(1, stepCol[e.rank][1]);
     g.fillStyle = sg; rrect(g, cx - colW / 2 + 8, sy, colW - 16, h, 18); g.fill();
     txt(e.rank + "º", cx, sy + h / 2, colW - 40, 62, "800", "#3d2852");
-    txt(e.score + (e.score === 1 ? " ponto" : " pontos"), cx, sy - 24, colW - 16, 38, "800", "#ffd34d");
+    txt(formatPoints(e.score) + (e.score === 1 ? " ponto" : " pontos"), cx, sy - 24, colW - 16, 38, "800", "#ffd34d");
     const lines = e.name.includes(" & ") ? e.name.split(" & ").map((t, k) => k ? "& " + t : t) : [e.name];
     lines.forEach((t, k) => txt(t, cx, sy - 72 - (lines.length - 1 - k) * 40, colW - 16, 34, "700", "#fff"));
     const nameTop = sy - 72 - (lines.length - 1) * 40 - 26, cy = nameTop - R - 8;
@@ -51,7 +51,7 @@ async function scoreboardPNG() {
       txt(e.rank + "º", M + 44, ry + h / 2, 70, 30, "800", "#ffd34d");
       circleImg(imgOf.get(e), M + 112, ry + h / 2, ar, null);
       txt(e.name, M + 112 + ar + 18, ry + h / 2, 520, 30, "700", "#fff", "left");
-      txt(e.score + (e.score === 1 ? " pt" : " pts"), W - M - 28, ry + h / 2, 200, 30, "800", "#ffd34d", "right");
+      txt(formatPoints(e.score) + (e.score === 1 ? " pt" : " pts"), W - M - 28, ry + h / 2, 200, 30, "800", "#ffd34d", "right");
     });
   }
   // prêmios

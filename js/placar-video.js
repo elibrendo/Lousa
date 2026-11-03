@@ -99,7 +99,7 @@ async function scoreboardVideo(onProgress) {
       const sg = g.createLinearGradient(0, sy, 0, baseY); sg.addColorStop(0, stepCol[e.rank][0]); sg.addColorStop(1, stepCol[e.rank][1]);
       g.fillStyle = sg; rrect(g, cx - colW / 2 + 8, sy, colW - 16, Math.max(2, h), 18); g.fill();
       if (k > 0.55) vText(g, e.rank + "º", cx, sy + Math.min(h, full) / 2, colW - 40, 60, "800", "#3d2852", "center", (k - 0.55) / 0.3);
-      const pts = Math.round(e.score * k); vText(g, pts + (pts === 1 ? " ponto" : " pontos"), cx, sy - 24, colW - 16, 38, "800", "#ffd34d", "center", k * 3);
+      const pts = e.score * k; vText(g, formatPoints(pts) + (pts === 1 ? " ponto" : " pontos"), cx, sy - 24, colW - 16, 38, "800", "#ffd34d", "center", k * 3);
       const lines = e.name.includes(" & ") ? e.name.split(" & ").map((s, j) => j ? "& " + s : s) : [e.name];
       lines.forEach((s, j) => vText(g, s, cx, sy - 72 - (lines.length - 1 - j) * 40, colW - 16, 34, "700", "#fff", "center", k * 3));
       const nameTop = sy - 72 - (lines.length - 1) * 40 - 26, cy = nameTop - R - 8;
@@ -117,7 +117,7 @@ async function scoreboardVideo(onProgress) {
         vText(g, e.rank + "º", M + 44 + dx, ry + h / 2, 70, 30, "800", "#ffd34d", "center", a);
         vCircle(g, imgOf.get(e), M + 112 + dx, ry + h / 2, ar, null, a);
         vText(g, e.name, M + 112 + ar + 18 + dx, ry + h / 2, 520, 30, "700", "#fff", "left", a);
-        vText(g, e.score + (e.score === 1 ? " pt" : " pts"), W - M - 28 + dx, ry + h / 2, 200, 30, "800", "#ffd34d", "right", a);
+        vText(g, formatPoints(e.score) + (e.score === 1 ? " pt" : " pts"), W - M - 28 + dx, ry + h / 2, 200, 30, "800", "#ffd34d", "right", a);
       });
     }
   }
@@ -149,7 +149,7 @@ async function scoreboardVideo(onProgress) {
     vCircle(g, im, W / 2, 820, 190 * Math.max(0.01, k), "#ffd34d", 1);
     if (win) { vText(g, "👑", W / 2, 590 - (1 - clamp01(k)) * 40, 120, 100, "400", "#fff", "center", t / 0.5);
       vText(g, names, W / 2, 1100, W - 2 * M, 64, "800", "#fff", "center", (t - 0.4) / 0.5);
-      vText(g, win.score + (win.score === 1 ? " ponto" : " pontos"), W / 2, 1190, W - 2 * M, 54, "800", "#ffd34d", "center", (t - 0.6) / 0.5); }
+      vText(g, formatPoints(win.score) + (win.score === 1 ? " ponto" : " pontos"), W / 2, 1190, W - 2 * M, 54, "800", "#ffd34d", "center", (t - 0.6) / 0.5); }
     for (let i = 0; i < 24; i++) { const ph = (i * 0.37) % 1, x = (i * 97 + t * 40) % W, y = 250 + ((t * 260 + i * 140) % 1400); g.fillStyle = ["#ffd34d", "#9ff6e9", "#ff7ab8", "#7aa8ff"][i % 4]; g.globalAlpha = 0.85; g.fillRect(x, y, 14, 14 + ph * 10); g.globalAlpha = 1; }
     vText(g, "Minha Lousa", W / 2, 1618, W - 2 * M, 26, "700", "#8a8cc8", "center");
   }

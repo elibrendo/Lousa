@@ -306,6 +306,7 @@ canvas{grid-area:board;min-width:0;min-height:0}
 
 /* ===== v0.18 ===== */
 .who-card{max-height:94%;overflow:auto}.who-card .hint{margin:4px 0 8px;color:#c9cbff}.who-row{margin:10px 0;padding:9px 10px;border-radius:12px;background:rgba(255,255,255,.07)}.who-word{font-weight:800;color:#ffd34d;margin-bottom:7px}.who-word small{color:#9ff6e9;font-weight:700;margin-left:6px}.who-chips{display:flex;flex-wrap:wrap;gap:6px}.who-chip{padding:7px 12px;border-radius:999px;border:2px solid #6264a9;background:#2c2d59;color:#fff;font-weight:700;cursor:pointer}.who-chip.on{background:#157e6c;border-color:#4fe3bd}
+.who-split{margin:0 0 7px;padding:5px 10px;border:1px solid #9a7c39;border-radius:8px;background:#514222;color:#ffe08a;font-weight:800;cursor:pointer}.who-split.on{background:#157e6c;border-color:#4fe3bd;color:#fff}.who-selection{margin-top:7px;color:#9ff6e9;font-size:13px;font-weight:800}
 .who-chip.none{border-style:dashed}
 .who-chip.none.on{background:#7a2d3a;border-color:#ff7a8a}
 .pf{display:flex;gap:4px;align-items:center}.pf input{flex:1;min-width:0}.pf select{flex:0 0 52px;width:52px!important;padding:0 2px!important;min-height:0}
