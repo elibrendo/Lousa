@@ -19,7 +19,8 @@ function openWho(team, logged) {
   const ov = document.getElementById("whoOverlay"), list = document.getElementById("whoList"), ok = document.getElementById("whoOk");
   document.getElementById("whoHint").textContent = drawer + ", selecione quem acertou cada palavra. Você ganha todos os pontos; se dividir, cada ganhador recebe uma parte igual.";
   list.replaceChildren(); const pick = {};
-  const solved = []; for (let i = 0; i < wordsCount(); i++) if (solvedWords[i] && roundWords[i]) solved.push(i);
+  const solved = solvedOrder.filter(i => solvedWords[i] && roundWords[i]);
+  list.classList.toggle("who-list-three", solved.length >= 3);
   const refresh = () => { ok.disabled = !solved.every(i => pick[i] && pick[i].selected.length); };
   solved.forEach(i => {
     const row = document.createElement("div"); row.className = "who-row";

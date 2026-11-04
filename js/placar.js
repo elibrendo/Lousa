@@ -159,8 +159,16 @@ function showFinal() {
 document.getElementById("showFinal").addEventListener("click", showFinal);
 document.getElementById("finalClose").addEventListener("click", () => { document.getElementById("finalOverlay").hidden = true; });
 document.getElementById("finalNew").addEventListener("click", () => { document.getElementById("finalOverlay").hidden = true; resetSession(); });
-function finishRound() {
+function finishRound(endReason = null) {
   if (roundFinished) return;
+  const skipped = endReason === "rodada pulada";
+  if (skipped) {
+    totalScore = 0;
+    scoreValue.textContent = "0";
+    scorePop.textContent = "";
+    solvedPoints.fill(0);
+    gameDrawings.forEach(d => { if (d.kind === "acertou" && d.turn === turnNumber + 1) d.pts = 0; });
+  }
   roundFinished = true;
   clearTimeout(hideTimer); hideTimer = null;
   if (timerPaused && pauseStartedAt && currentRound) {
@@ -194,7 +202,7 @@ function finishRound() {
     teamScores[playedTeam] += totalScore;
     if (currentRound) {
       currentRound.endedAt = new Date();
-      currentRound.endReason = timerRemaining <= 0 ? "tempo esgotado" : "todas as palavras acertadas";
+      currentRound.endReason = skipped ? endReason : timerRemaining <= 0 ? "tempo esgotado" : "todas as palavras acertadas";
       currentRound.teamTotal = teamScores[playedTeam];
       currentRound.result = { points: totalScore, timeLeft: timerRemaining, words: roundWordsInfo() };
       gameLog.push(currentRound);
@@ -208,7 +216,7 @@ function finishRound() {
     renderTeams();
     saveSession();
   }
-  document.getElementById("resultsTitle").textContent = playedTeam !== null ? "Rodada encerrada — " + teamNames[playedTeam] + (playedRoles ? (isAllMode() ? " (" + turnNumber + "/" + totalTurns() + ")" : " (" + playedRoles.round + "/" + roundsPerTeam() + ")") : "") : "Rodada encerrada";
+  document.getElementById("resultsTitle").textContent = (skipped ? "Rodada pulada" : "Rodada encerrada") + (playedTeam !== null ? " — " + teamNames[playedTeam] + (playedRoles ? (isAllMode() ? " (" + turnNumber + "/" + totalTurns() + ")" : " (" + playedRoles.round + "/" + roundsPerTeam() + ")") : "") : "");
   refreshDrawControls();
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
   const list = document.getElementById("resultsList");
@@ -227,14 +235,15 @@ function finishRound() {
     list.insertBefore(who, list.firstChild);
     const info = document.createElement("div");
     info.style.cssText = "border-top:1px solid #555;padding-top:9px;color:#ffd34d";
-    if (isOneMode()) info.textContent = "Cada ponto vale para quem acertou e para " + teamMembers[playedTeam][0] + " (quem desenhou). " + (sessionOver ? "Fim da sessão! Feche para ver a classificação." : "Próximo a desenhar: " + teamMembers[nextTeam][0] + ".");
+    if (skipped) info.textContent = "Rodada pulada: nenhum ponto foi atribuído. " + (sessionOver ? "Fim da sessão! Feche para ver a classificação." : "Próximo a desenhar: " + teamMembers[nextTeam][0] + ".");
+    else if (isOneMode()) info.textContent = "Cada ponto vale para quem acertou e para " + teamMembers[playedTeam][0] + " (quem desenhou). " + (sessionOver ? "Fim da sessão! Feche para ver a classificação." : "Próximo a desenhar: " + teamMembers[nextTeam][0] + ".");
     else info.textContent = "+" + totalScore + " para " + teamNames[playedTeam] + " (total: " + teamScores[playedTeam] + "). " +
       (sessionOver ? "Fim da sessão! Feche para ver a classificação." :
         "Próxima dupla: " + teamNames[nextTeam] + (nextRoles ? " (✏️ " + teamMembers[nextTeam][nextRoles.drawer] + " desenha, 🔍 " + teamMembers[nextTeam][nextRoles.guesser] + " adivinha)" : ""));
     list.appendChild(info);
   }
-  if (isOneMode() && playedTeam !== null && playedRoles && solvedWords.slice(0, wordsCount()).some(Boolean)) openWho(playedTeam, lastLoggedRound);
+  if (!skipped && isOneMode() && playedTeam !== null && playedRoles && solvedWords.slice(0, wordsCount()).some(Boolean)) openWho(playedTeam, lastLoggedRound);
   else document.getElementById("resultsOverlay").hidden = false;
-  if (roundWords.slice(0, wordsCount()).every((w, k) => !w || solvedWords[k])) setTimeout(() => SFX.win(), 350);
+  if (!skipped && roundWords.slice(0, wordsCount()).every((w, k) => !w || solvedWords[k])) setTimeout(() => SFX.win(), 350);
   else setTimeout(() => SFX.roundEnd(), timerRemaining <= 0 ? 650 : 0);
 }

@@ -3,6 +3,7 @@ const roundWords = ["", "", "", "", ""];
 const solvedWords = [false, false, false, false, false];
 const solvedAt = [null, null, null, null, null];
 const solvedPoints = [0, 0, 0, 0, 0];
+const solvedOrder = [];
 const lockedWords = [false, false, false, false, false];
 let drawsRemaining = 3;
 const wordBank = {

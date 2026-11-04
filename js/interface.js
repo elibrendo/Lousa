@@ -36,6 +36,7 @@ function prepareNextRound() {
   drawnSeen.clear();
   timerStarted = false; roundFinished = false;
   solvedWords.fill(false); solvedAt.fill(null); solvedPoints.fill(0);
+  solvedOrder.length = 0; hasDrawnWords = false;
   lockedWords.fill(false); roundWords.fill("");
   ["word1", "word2", "word3", "word4", "word5"].forEach(id => { document.getElementById(id).value = ""; });
   applyPrivacy(false);

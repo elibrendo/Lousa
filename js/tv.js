@@ -1,5 +1,5 @@
 // ===== Tela da TV: segunda janela (sem as palavras), sincronizada ao vivo com este notebook =====
-const TV_CSS = '\nbody.tv{background:#1d1d3f;display:flex}\nbody.tv button{display:none!important}\nbody.tv main{flex:1;min-width:0;min-height:0;display:flex;background:#1d1d3f}\nbody.tv .canvas-wrap{grid-template-columns:minmax(0,1fr)!important;grid-template-areas:"top" "turn" "board" "teams"!important;margin:10px;flex:1}\nbody.tv canvas{grid-area:board;display:block;width:100%;height:100%;cursor:none}\n#tvOv .results-overlay{position:fixed!important;inset:0;z-index:50}\n#tvPaused{position:fixed;top:14px;right:18px;z-index:60;background:#ffd34d;color:#3d2852;font-weight:900;font-size:24px;padding:8px 18px;border-radius:14px;box-shadow:0 4px 0 #bb7028}\n#tvLost{position:fixed;inset:0;z-index:90;background:#1d1d3ff2;color:#fff;font:800 26px ui-rounded,system-ui,sans-serif;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px}\n[hidden]{display:none!important}\n';
+const TV_CSS = '\nbody.tv{background:#1d1d3f;display:flex}\nbody.tv button{display:none!important}\nbody.tv main{flex:1;min-width:0;min-height:0;display:flex;background:#1d1d3f}\nbody.tv .canvas-wrap{grid-template-columns:minmax(0,1fr)!important;grid-template-areas:"top" "turn" "board" "teams"!important;margin:10px;flex:1}\nbody.tv canvas{grid-area:board;display:block;width:100%;height:100%;cursor:none}\n#tvOv .results-overlay{position:fixed!important;inset:0;z-index:50}\n#tvOv .who-card{width:min(460px,90%)!important}\n#tvOv #whoList{grid-template-columns:1fr!important}\n#tvPaused{position:fixed;top:14px;right:18px;z-index:60;background:#ffd34d;color:#3d2852;font-weight:900;font-size:24px;padding:8px 18px;border-radius:14px;box-shadow:0 4px 0 #bb7028}\n#tvLost{position:fixed;inset:0;z-index:90;background:#1d1d3ff2;color:#fff;font:800 26px ui-rounded,system-ui,sans-serif;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px}\n[hidden]{display:none!important}\n';
 const tvClientSrc = null;
 let tvReady = false, tvTick = -1, tvBusy = false, tvDirtyTeams = true, tvLast = {}, tvAssets = new Map(), tvNew = [];
 
@@ -25,7 +25,8 @@ function tvClient() {
     if (bm) { const s = Math.min(w / bm.width, h / bm.height), dw = bm.width * s, dh = bm.height * s; g.drawImage(bm, (w - dw) / 2, (h - dh) / 2, dw, dh); }
   }
   function syncAttrs(o, n) {
-    [...o.attributes].forEach(a => { if (!n.hasAttribute(a.name)) o.removeAttribute(a.name); });
+    const keepScale = o.classList.contains("results-card") && o.style.scale;
+    [...o.attributes].forEach(a => { if (!n.hasAttribute(a.name) && !(a.name === "style" && keepScale)) o.removeAttribute(a.name); });
     [...n.attributes].forEach(a => { if (o.getAttribute(a.name) !== a.value) o.setAttribute(a.name, a.value); });
   }
   function morph(a, b) {
@@ -43,9 +44,9 @@ function tvClient() {
   function fitCards() {
     const ui = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--ui")) || 1;
     ov.querySelectorAll(".results-card").forEach(el => {
-      el.style.scale = ""; el.style.zoom = "";
       const h = el.offsetHeight || 1, w = el.offsetWidth || 1;
-      el.style.scale = Math.min(ui, (innerHeight * 0.94) / h, (innerWidth * 0.96) / w).toFixed(3);
+      const scale = Math.min(ui, (innerHeight * 0.94) / h, (innerWidth * 0.96) / w).toFixed(3);
+      if (el.style.scale !== scale) el.style.scale = scale;
     });
   }
   new ResizeObserver(paint).observe(cv);
@@ -63,7 +64,7 @@ function tvClient() {
         const cur = bot.querySelector(".team-card.playing");
         if (cur) bot.scrollTo({ left: Math.max(0, cur.offsetLeft - (bot.clientWidth - cur.offsetWidth) / 2) });
       }
-      if (d.ov != null) { ov.innerHTML = un(d.ov.join("")); fitCards(); requestAnimationFrame(fitCards); }
+      if (d.ov != null) { setHtml(ov, un(d.ov.join(""))); fitCards(); requestAnimationFrame(fitCards); }
       if (d.paused != null) $("tvPaused").hidden = !d.paused;
     }
   });

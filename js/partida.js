@@ -103,6 +103,8 @@ function applyCanvasBackground() {
 document.getElementById("applyCanvasBg").addEventListener("click", applyCanvasBackground);
 const drawButton = document.getElementById("drawWords");
 const drawCount = document.getElementById("drawCount");
+const skipRoundButton = document.getElementById("skipRound");
+let hasDrawnWords = false;
 const themeOptions = document.getElementById("themeOptions");
 const activeThemes = document.getElementById("activeThemes");
 const themeCheckboxes = [...themeOptions.querySelectorAll('input[type="checkbox"]')];
@@ -128,6 +130,7 @@ updateThemeDisplay(allThemesCheckbox);
 function refreshDrawControls() {
   drawCount.textContent = "Novas palavras disponíveis: " + drawsRemaining;
   drawButton.disabled = drawsRemaining <= 0 || timerStarted || roundFinished || getSelectedThemes().length === 0;
+  skipRoundButton.hidden = !timerStarted || roundFinished;
   document.querySelectorAll("[data-lock]").forEach((button, i) => {
     const hasWord = !!document.getElementById("word" + (i + 1)).value.trim();
     if (!hasWord) lockedWords[i] = false;
@@ -219,7 +222,11 @@ function drawWordsNow() {
   drawsRemaining--;
   refreshDrawControls();
 }
-drawButton.addEventListener("click", () => { if (drawsRemaining > 0) drawWordsNow(); });
+drawButton.addEventListener("click", () => {
+  if (drawsRemaining <= 0) return;
+  hasDrawnWords = true;
+  drawWordsNow();
+});
 
 function roundWordsInfo() {
   return Array.from({length:wordsCount()}, (_,i)=>i).filter(i => roundWords[i]).map(i => ({
@@ -234,6 +241,7 @@ function startRound() {
   solvedWords.fill(false);
   solvedAt.fill(null);
   solvedPoints.fill(0);
+  solvedOrder.length = 0;
   lockedWords.fill(false);
   drawnSeen.clear();
   markUsed(roundWords.slice(0, wordsCount()));
@@ -271,6 +279,12 @@ function startFlow() {
   if (timerStarted && !roundFinished) return;
   if (sessionOver) resetSession();
   if (!turnOrder.length) { drawOrderButton.click(); return; }
+  if (!hasDrawnWords) {
+    drawCount.textContent = "Clique em “Novas palavras” antes de iniciar.";
+    openWords();
+    return;
+  }
+  closeWords();
   closeSettings();
   turnOverlay.hidden = true;
   const overlay = document.createElement("div");
@@ -291,17 +305,25 @@ function startFlow() {
   }, 1000);
 }
 function beginRound() {
-  if (Array.from({length:wordsCount()},(_,i)=>"word"+(i+1)).every(id => !document.getElementById(id).value.trim())) drawWordsNow();
+  if (!hasDrawnWords) {
+    drawCount.textContent = "Clique em “Novas palavras” antes de iniciar.";
+    openWords();
+    return;
+  }
   if (!startRound()) {
     drawCount.textContent = "Selecione ao menos um tema.";
     openSettings();
   }
 }
 document.getElementById("setWords").addEventListener("click", startFlow);
+skipRoundButton.addEventListener("click", () => {
+  if (timerStarted && !roundFinished) finishRound("rodada pulada");
+});
 document.querySelectorAll("[data-solve]").forEach(button => button.addEventListener("click", () => {
   const i = Number(button.dataset.solve) - 1;
   if (!roundWords[i] || solvedWords[i] || !timerStarted || roundFinished || timerRemaining <= 0) return;
   solvedWords[i] = true;
+  solvedOrder.push(i);
   solvedAt[i] = Math.max(0, roundStartRemaining - timerRemaining);
   const earned = pointsForRemainingTime(timerRemaining);
   solvedPoints[i] = earned;
